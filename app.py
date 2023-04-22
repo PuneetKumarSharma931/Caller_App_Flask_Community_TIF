@@ -7,6 +7,12 @@ app = Flask(__name__)
 # @Route POST /v1/role
 # @desc Create a new role from given data
 
+# required data example
+# {
+#  "name": "Community Moderator",
+#  "scopes": ["member-get", "member-remove"]
+# }
+
 @app.route('/v1/role/', methods=['POST'])
 def create_new_role():
     data = request.get_json()
@@ -16,6 +22,7 @@ def create_new_role():
 
 # @Route GET /v1/role
 # @desc List all the roles
+# optional query params are page and pageSize for Pagination
 
 @app.route('/v1/role', methods=['GET'])
 def get_all_roles():
@@ -35,6 +42,13 @@ def get_all_roles():
 # @route POST /v1/auth/signup
 # @desc Create a new user from given data
 
+# required data example
+# {
+#  "name": "Puneet",
+#  "email": "puneetsharma@gmail.com",
+#  "password": "puneetsh"
+# }
+
 @app.route('/v1/auth/signup', methods=['POST'])
 def signup():
     user_data = request.get_json()
@@ -45,6 +59,12 @@ def signup():
 
 # @Route POST /v1/auth/signin
 # @desc Sign in user from the valid credentials and generate access token
+
+# required data example
+# {
+#  "email": "puneetsharma@gmail.com",
+#  "password": "puneetsh"
+# }
 
 @app.route('/v1/auth/signin', methods=['POST'])
 def signin():
@@ -79,6 +99,11 @@ def get_me():
 # auth header required
 # @desc Create a new community from given data
 
+# required data example
+# {
+#  "name": "Puneet Community"
+# }
+
 @app.route('/v1/community', methods=['POST'])
 def create_community():
 
@@ -99,6 +124,7 @@ def create_community():
 
 # @Route GET /v1/community
 # @desc List all the communities
+# optional query params are page and pageSize for Pagination
 
 @app.route('/v1/community', methods=['GET'])
 def get_all_communities():
@@ -117,6 +143,11 @@ def get_all_communities():
 
 # @Route GET /v1/community/<id>/members
 # @desc List all the members of a community
+# optional query params are page and pageSize for Pagination
+
+# required parameter in the url is slug of the community
+# example
+# http://127.0.0.1:5000/v1/community/puneet-community/members
 
 @app.route('/v1/community/<id>/members', methods=['GET'])
 def get_all_members_community(id):
@@ -137,6 +168,7 @@ def get_all_members_community(id):
 # @Route GET /v1/community/me/owner
 # auth header required
 # @desc Get all the owned communities of signed in user
+# optional query params are page and pageSize for Pagination
 
 @app.route('/v1/community/me/owner', methods=['GET'])
 def get_my_owned_communities():
@@ -165,6 +197,7 @@ def get_my_owned_communities():
 # @Route GET /v1/community/me/member
 # auth header required
 # @desc Get all the joined communities of the signed in user
+# optional query params are page and pageSize for Pagination
 
 @app.route('/v1/community/me/member', methods=['GET'])
 def get_my_joined_communities():
@@ -194,6 +227,13 @@ def get_my_joined_communities():
 # auth header required
 # @desc Adding a member to the community
 
+# required data example
+# {
+#  "community": "7055485646867215847",
+#  "user": "7055494752046479060",
+#  "role": "7052534247289861103"
+# }
+
 @app.route('/v1/member', methods=['POST'])
 def add_new_member():
 
@@ -215,6 +255,10 @@ def add_new_member():
 # @Route DELETE /v1/member/<id>
 # auth header is required
 # @desc Removing a user from the communities
+
+#   required parameter in the url is the id of the user to remove from your owned communities
+
+#   example data http://127.0.0.1:5000/v1/member/7055494752046479060
 
 @app.route('/v1/member/<id>', methods=['DELETE'])
 def remove_member(id):
